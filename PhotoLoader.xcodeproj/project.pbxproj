@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,9 +13,12 @@
 		50A0AC9525BAD3C90077BD52 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50A0AC9325BAD3C90077BD52 /* Main.storyboard */; };
 		50A0AC9725BAD3CC0077BD52 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 50A0AC9625BAD3CC0077BD52 /* Assets.xcassets */; };
 		50A0AC9A25BAD3CC0077BD52 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 50A0AC9825BAD3CC0077BD52 /* LaunchScreen.storyboard */; };
+		50A0ACA925BAD61E0077BD52 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A0ACA825BAD61E0077BD52 /* PhotoCollectionViewCell.swift */; };
+		57775F9DEC7B73E40B8A11D5 /* Pods_PhotoLoader.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0289A410AD746DAC03A91458 /* Pods_PhotoLoader.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0289A410AD746DAC03A91458 /* Pods_PhotoLoader.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_PhotoLoader.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50A0AC8A25BAD3C90077BD52 /* PhotoLoader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhotoLoader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		50A0AC8D25BAD3C90077BD52 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		50A0AC8F25BAD3C90077BD52 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -24,6 +27,9 @@
 		50A0AC9625BAD3CC0077BD52 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		50A0AC9925BAD3CC0077BD52 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		50A0AC9B25BAD3CC0077BD52 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		50A0ACA825BAD61E0077BD52 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		823BBCBDA4ADC1F4F52E8BCE /* Pods-PhotoLoader.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoLoader.debug.xcconfig"; path = "Target Support Files/Pods-PhotoLoader/Pods-PhotoLoader.debug.xcconfig"; sourceTree = "<group>"; };
+		B3862321CFB3ADED810D25C5 /* Pods-PhotoLoader.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoLoader.release.xcconfig"; path = "Target Support Files/Pods-PhotoLoader/Pods-PhotoLoader.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57775F9DEC7B73E40B8A11D5 /* Pods_PhotoLoader.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -42,6 +49,8 @@
 			children = (
 				50A0AC8C25BAD3C90077BD52 /* PhotoLoader */,
 				50A0AC8B25BAD3C90077BD52 /* Products */,
+				B650D3405E1C159DB56901FA /* Pods */,
+				737D7A0ABB163EE0383E60E6 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -58,6 +67,7 @@
 			children = (
 				50A0AC8D25BAD3C90077BD52 /* AppDelegate.swift */,
 				50A0AC8F25BAD3C90077BD52 /* SceneDelegate.swift */,
+				50A0ACA825BAD61E0077BD52 /* PhotoCollectionViewCell.swift */,
 				50A0AC9125BAD3C90077BD52 /* ViewController.swift */,
 				50A0AC9325BAD3C90077BD52 /* Main.storyboard */,
 				50A0AC9625BAD3CC0077BD52 /* Assets.xcassets */,
@@ -67,6 +77,23 @@
 			path = PhotoLoader;
 			sourceTree = "<group>";
 		};
+		737D7A0ABB163EE0383E60E6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0289A410AD746DAC03A91458 /* Pods_PhotoLoader.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		B650D3405E1C159DB56901FA /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				823BBCBDA4ADC1F4F52E8BCE /* Pods-PhotoLoader.debug.xcconfig */,
+				B3862321CFB3ADED810D25C5 /* Pods-PhotoLoader.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -74,9 +101,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 50A0AC9E25BAD3CC0077BD52 /* Build configuration list for PBXNativeTarget "PhotoLoader" */;
 			buildPhases = (
+				6B5C3AE4C4C56FF67110211C /* [CP] Check Pods Manifest.lock */,
 				50A0AC8625BAD3C90077BD52 /* Sources */,
 				50A0AC8725BAD3C90077BD52 /* Frameworks */,
 				50A0AC8825BAD3C90077BD52 /* Resources */,
+				F4757F9C4E30B378EE9F9F34 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -132,12 +161,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		6B5C3AE4C4C56FF67110211C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-PhotoLoader-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		F4757F9C4E30B378EE9F9F34 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PhotoLoader/Pods-PhotoLoader-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-PhotoLoader/Pods-PhotoLoader-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-PhotoLoader/Pods-PhotoLoader-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		50A0AC8625BAD3C90077BD52 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				50A0AC9225BAD3C90077BD52 /* ViewController.swift in Sources */,
+				50A0ACA925BAD61E0077BD52 /* PhotoCollectionViewCell.swift in Sources */,
 				50A0AC8E25BAD3C90077BD52 /* AppDelegate.swift in Sources */,
 				50A0AC9025BAD3C90077BD52 /* SceneDelegate.swift in Sources */,
 			);
@@ -283,6 +355,7 @@
 		};
 		50A0AC9F25BAD3CC0077BD52 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 823BBCBDA4ADC1F4F52E8BCE /* Pods-PhotoLoader.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -302,6 +375,7 @@
 		};
 		50A0ACA025BAD3CC0077BD52 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B3862321CFB3ADED810D25C5 /* Pods-PhotoLoader.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
