@@ -24,7 +24,7 @@ class ViewController: UIViewController {
         return cv
     }()
     
-    let activityIndicator: UIActivityIndicatorView = {
+    lazy var activityIndicator: UIActivityIndicatorView = {
         let ai = UIActivityIndicatorView(style: UIActivityIndicatorView.Style.large)
         ai.color = .black
         ai.startAnimating()
@@ -46,7 +46,6 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         setViews()
         loadListOfImages()
-
     }
     
     func loadListOfImages() {
@@ -54,7 +53,7 @@ class ViewController: UIViewController {
         guard let url = URL(string: urlString) else { return }
         
         let task = URLSession.shared.dataTask(with: url) {
-            data, response, error in
+            data, _, error in
             
             if error != nil
             {
@@ -81,7 +80,6 @@ class ViewController: UIViewController {
         view.backgroundColor = .darkGray
         
         view.addSubview(photoCV)
-       
         photoCV.addSubview(activityIndicator)
         
         photoCV.snp.makeConstraints { (make) in
@@ -100,30 +98,48 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.id,
-                                                      for: indexPath) as! PhotoCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.id,
+                                                            for: indexPath) as? PhotoCollectionViewCell else {
+            return UICollectionViewCell()
+        }
         
         cell.imageView.image = nil
         cell.activityIndicator.startAnimating()
         
-        let imageDictionary = images[indexPath.row] as! NSDictionary
-        let imageUrlString = imageDictionary.object(forKey: "thumbnailUrl") as! String
-        let imageUrl: NSURL = NSURL(string: imageUrlString)!
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            let imageData: NSData = NSData(contentsOf: imageUrl as URL)!
-            DispatchQueue.main.async {
-                if let image = UIImage(data: imageData as Data) {
-                    cell.imageView.image = image
-                    cell.activityIndicator.stopAnimating()
+        if let imageDictionary = images[indexPath.row] as? NSDictionary,
+           let imageUrlString = imageDictionary.object(forKey: "thumbnailUrl") as? String,
+           let imageUrl = URL(string: imageUrlString) {
+            
+            let task = URLSession.shared.dataTask(with: imageUrl) {
+                data, _, error in
+                
+                if error != nil {
+                    print("error=\(String(describing: error))")
+                    return
+                }
+                
+                guard let data = data else { return }
+                DispatchQueue.main.async {
+                    if let image = UIImage(data: data as Data) {
+                        cell.imageView.image = image
+                        cell.activityIndicator.stopAnimating()
+                    }
                 }
             }
+            cell.task = task
+            cell.task?.resume()
         }
         return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
+        guard let photoCell = cell as? PhotoCollectionViewCell else { return }
+        photoCell.task?.cancel()
     }
 }
 
 extension ViewController: UICollectionViewDelegateFlowLayout {
+    
     private var baseInset: CGFloat { return 8 }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -142,6 +158,3 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
         return (collectionView.frame.size.width - inset * (numberOfItems + 1)) / numberOfItems
     }
 }
-
-
-
