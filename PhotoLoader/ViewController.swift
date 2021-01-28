@@ -18,7 +18,7 @@ class ViewController: UIViewController {
         layout.minimumLineSpacing = 8
         let cv = UICollectionView(frame: view.safeAreaLayoutGuide.layoutFrame, collectionViewLayout: layout)
         cv.register(PhotoCollectionViewCell.self, forCellWithReuseIdentifier: PhotoCollectionViewCell.id)
-        cv.backgroundColor = .darkGray
+        cv.backgroundColor = .systemGray
         cv.delegate = self
         cv.dataSource = self
         return cv
@@ -51,33 +51,32 @@ class ViewController: UIViewController {
     func loadListOfImages() {
         
         guard let url = URL(string: urlString) else { return }
-        
-        let task = URLSession.shared.dataTask(with: url) {
+
+        URLSession.shared.dataTask(with: url) {
             data, _, error in
-            
+
             if error != nil
             {
                 print("error=\(String(describing: error))")
                 return
             }
-            
+
             guard let data = data else { return }
             do {
                 if let convertedJsonIntoArray = try JSONSerialization.jsonObject(with: data, options: []) as? NSArray {
-                    
+
                     self.images = convertedJsonIntoArray as [AnyObject]
                 }
             } catch let error as NSError {
                 print(error.localizedDescription)
             }
-        }
-        task.resume()
+        }.resume()
     }
     
     private func setViews() {
         
         title = "Photo Loader"
-        view.backgroundColor = .darkGray
+        view.backgroundColor = .systemGray
         
         view.addSubview(photoCV)
         photoCV.addSubview(activityIndicator)
@@ -98,43 +97,18 @@ extension ViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.id,
-                                                            for: indexPath) as? PhotoCollectionViewCell else {
-            return UICollectionViewCell()
-        }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotoCollectionViewCell.id, for: indexPath) as? PhotoCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.imageView.image = nil
         cell.activityIndicator.startAnimating()
         
         if let imageDictionary = images[indexPath.row] as? NSDictionary,
-           let imageUrlString = imageDictionary.object(forKey: "thumbnailUrl") as? String,
-           let imageUrl = URL(string: imageUrlString) {
-            
-            let task = URLSession.shared.dataTask(with: imageUrl) {
-                data, _, error in
-                
-                if error != nil {
-                    print("error=\(String(describing: error))")
-                    return
-                }
-                
-                guard let data = data else { return }
-                DispatchQueue.main.async {
-                    if let image = UIImage(data: data as Data) {
-                        cell.imageView.image = image
-                        cell.activityIndicator.stopAnimating()
-                    }
-                }
-            }
-            cell.task = task
-            cell.task?.resume()
+           let imageUrlString = imageDictionary.object(forKey: "thumbnailUrl") as? String {
+   
+            cell.imageView.loadImageUsingUrlString(urlString: imageUrlString, completion: {
+                cell.activityIndicator.stopAnimating()
+            })
         }
         return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        guard let photoCell = cell as? PhotoCollectionViewCell else { return }
-        photoCell.task?.cancel()
     }
 }
 
