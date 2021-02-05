@@ -49,13 +49,25 @@ class ViewController: UIViewController {
         }
     }
     
+    var timer: Timer?
+    
     let urlString = "https://jsonplaceholder.typicode.com/photos"
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setViews()
-        setTimer()
         loadListOfImages()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setTimer()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        timer?.invalidate()
+        counter = 0
     }
     
     func loadListOfImages() {
@@ -65,8 +77,7 @@ class ViewController: UIViewController {
         URLSession.shared.dataTask(with: url) {
             data, _, error in
             
-            if error != nil
-            {
+            if error != nil {
                 print("error=\(String(describing: error))")
                 return
             }
@@ -84,11 +95,12 @@ class ViewController: UIViewController {
     }
     
     private func setTimer() {
-        let timer = Timer(timeInterval: 1.0,
+        timer = Timer(timeInterval: 1.0,
                           target: self,
                           selector: #selector(fireTimer),
                           userInfo: nil,
                           repeats: true)
+        guard let timer = timer else { return }
         RunLoop.current.add(timer, forMode: .common)
     }
     
@@ -121,6 +133,18 @@ class ViewController: UIViewController {
     }
 }
 
+extension ViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        print(indexPath.item)
+        let vc = PhotoDetailsViewController()
+        if let imageDictionary = images[indexPath.item] as? NSDictionary,
+           let imageUrlString = imageDictionary.object(forKey: "url") as? String {
+            vc.imageUrlString = imageUrlString
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+}
+
 extension ViewController: UICollectionViewDataSource {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -132,11 +156,13 @@ extension ViewController: UICollectionViewDataSource {
         
         cell.activityIndicator.startAnimating()
         
-        if let imageDictionary = images[indexPath.row] as? NSDictionary,
+        if let imageDictionary = images[indexPath.item] as? NSDictionary,
            let imageUrlString = imageDictionary.object(forKey: "thumbnailUrl") as? String {
    
-            cell.imageView.loadImageUsingUrlString(urlString: imageUrlString, completion: {
-                cell.activityIndicator.stopAnimating()
+            cell.imageView.loadImageUsingUrlString(urlString: imageUrlString, completion: { [weak cell] in
+                if let cell = cell {
+                    cell.activityIndicator.stopAnimating()
+                }
             })
         }
         return cell
