@@ -11,6 +11,8 @@ import SnapKit
 
 class ViewController: UIViewController {
     
+    var backgroundTask: UIBackgroundTaskIdentifier = .invalid
+    
     let countLabel = UILabel()
     
     var counter = 0 {
@@ -67,8 +69,21 @@ class ViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         timer?.invalidate()
+        endBackgroundTask()
         counter = 0
     }
+    
+    func registerBackgroundTask() {
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+          self?.endBackgroundTask()
+        }
+        assert(backgroundTask != .invalid)
+      }
+        
+      func endBackgroundTask() {
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
+      }
     
     func loadListOfImages() {
         
@@ -102,6 +117,7 @@ class ViewController: UIViewController {
                           repeats: true)
         guard let timer = timer else { return }
         RunLoop.current.add(timer, forMode: .common)
+        registerBackgroundTask()
     }
     
     @objc func fireTimer() {
