@@ -22,7 +22,7 @@ class CustomImageView: UIImageView {
         image = nil
         
         if let imageFromCache = imageCache.object(forKey: urlString as NSString) { 
-            self.image = imageFromCache
+            image = imageFromCache
             completion()
             return
         }
@@ -35,8 +35,9 @@ class CustomImageView: UIImageView {
             }
             
             DispatchQueue.main.async { [weak self] in
-                guard let imageToCache = UIImage(data: data!) else { return }
-                guard let self = self else { return }
+                guard let data = data,
+                      let imageToCache = UIImage(data: data),
+                      let self = self else { return }
                 if self.imageUrlString == urlString {
                     self.image = imageToCache
                     completion()

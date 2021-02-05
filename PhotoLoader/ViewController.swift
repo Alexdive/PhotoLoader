@@ -42,9 +42,9 @@ class ViewController: UIViewController {
     
     var images: [AnyObject] = [] {
         didSet {
-            DispatchQueue.main.async {
-                self.photoCV.reloadData()
-                self.activityIndicator.stopAnimating()
+            DispatchQueue.main.async { [weak self] in
+                self?.photoCV.reloadData()
+                self?.activityIndicator.stopAnimating()
             }
         }
     }
@@ -110,6 +110,7 @@ class ViewController: UIViewController {
     
     private func setViews() {
         
+        navigationController?.navigationBar.isHidden = false
         title = "Photo Loader"
         view.backgroundColor = .systemGray
         
