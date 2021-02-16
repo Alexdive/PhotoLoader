@@ -33,7 +33,7 @@ class CustomImageView: UIImageView {
                 print(error ?? "")
                 return
             }
-            
+        
             DispatchQueue.main.async { [weak self] in
                 guard let data = data,
                       let imageToCache = UIImage(data: data),
