@@ -21,22 +21,23 @@ class CustomImageView: UIImageView {
         
         image = nil
         
-        if let imageFromCache = imageCache.object(forKey: urlString as NSString) {
-            self.image = imageFromCache
+        if let imageFromCache = imageCache.object(forKey: urlString as NSString) { 
+            image = imageFromCache
             completion()
             return
         }
         
-        URLSession.shared.dataTask(with: url, completionHandler: { (data, respones, error) in
+        URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) in
             
             if error != nil {
                 print(error ?? "")
                 return
             }
-            
-            DispatchQueue.main.async {
-                guard let imageToCache = UIImage(data: data!) else { return }
-                
+        
+            DispatchQueue.main.async { [weak self] in
+                guard let data = data,
+                      let imageToCache = UIImage(data: data),
+                      let self = self else { return }
                 if self.imageUrlString == urlString {
                     self.image = imageToCache
                     completion()
